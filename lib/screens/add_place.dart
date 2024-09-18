@@ -1,21 +1,34 @@
-import 'package:favorite_places/modals/place.dart';
-import 'package:favorite_places/providers/places_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddPlace extends ConsumerStatefulWidget {
-  const AddPlace({super.key});
+import 'package:favorite_places/providers/user_places.dart';
+
+class AddPlaceScreen extends ConsumerStatefulWidget {
+  const AddPlaceScreen({super.key});
 
   @override
-  ConsumerState<AddPlace> createState() => _AddPlaceState();
+  ConsumerState<AddPlaceScreen> createState() {
+    return _AddPlaceScreenState();
+  }
 }
 
-class _AddPlaceState extends ConsumerState<AddPlace> {
+class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
+
+  void _savePlace() {
+    final enteredTitle = _titleController.text;
+
+    if (enteredTitle.isEmpty) {
+      return;
+    }
+
+    ref.read(userPlacesProvider.notifier).addPlace(enteredTitle);
+
+    Navigator.of(context).pop();
+  }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _titleController.dispose();
     super.dispose();
   }
@@ -24,35 +37,27 @@ class _AddPlaceState extends ConsumerState<AddPlace> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add place'),
+        title: const Text('Add new Place'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            TextField(
+              decoration: const InputDecoration(labelText: 'Title'),
               controller: _titleController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          ElevatedButton.icon(
-            iconAlignment: IconAlignment.start,
-            onPressed: () {
-              print('Text ${_titleController.text}');
-              ref
-                  .read(placesProvider.notifier)
-                  .addPlace(Place(title: _titleController.text));
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.add),
-            label: const Text('Add place'),
-          ),
-        ],
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: _savePlace,
+              icon: const Icon(Icons.add),
+              label: const Text('Add Place'),
+            ),
+          ],
+        ),
       ),
     );
   }
