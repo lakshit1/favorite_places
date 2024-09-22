@@ -18,6 +18,7 @@
       "Dart-Code.flutter"
       "Dart-Code.dart-code"
       "robert-brunhage.flutter-riverpod-snippets"
+      "jeroen-meijer.pubspec-assist"
     ];
     workspace = {
       # Runs when a workspace is first created with this `dev.nix` file
@@ -45,6 +46,7 @@
 
           adb -s localhost:5555 wait-for-device
         '';
+        upgrade-flutter = ''flutter upgrade'';
       };
       onStart = {
         set-git-email = "git config --global user.email '51991640+lakshit1@users.noreply.github.com'";
