@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:favorite_places/models/place.dart';
 import 'package:favorite_places/widgets/image_input.dart';
 import 'package:favorite_places/widgets/location_input.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,16 +34,22 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
     // }
 
     if (enteredTitle.isEmpty) {
-      print('Title not available');
+      if (kDebugMode) {
+        print('Title not available');
+      }
       return;
     }
     if (_selectedImage == null) {
-      print('Image not available');
+      if (kDebugMode) {
+        print('Image not available');
+      }
       return;
     }
 
     if (_selectedLocation == null) {
-      print('Location not available');
+      if (kDebugMode) {
+        print('Location not available');
+      }
       return;
     }
 
